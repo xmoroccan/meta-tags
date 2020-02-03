@@ -7,7 +7,7 @@ class MetaTagsTest extends TestCase
 {
     public function setUp()
     {
-        $this->head = new MetaTags;
+        $this->head = new MetaTags();
     }
 
     public function testTitleTag()
@@ -21,12 +21,12 @@ class MetaTagsTest extends TestCase
     {
         $tag1 = $this->head->link('alternate', [
             'hreflang' => 'pt-br',
-            'href' => 'https://br.pedroborg.es'
+            'href'     => 'https://br.pedroborg.es',
         ]);
 
         $tag2 = $this->head->link('alternate', [
             'hreflang' => 'en-us',
-            'href' => 'https://en.pedroborg.es'
+            'href'     => 'https://en.pedroborg.es',
         ]);
 
         $html = $this->head->render();
@@ -45,7 +45,7 @@ EOD;
         $tag = $this->head->link('canonical', 'https://pedroborg.es');
         $alternate = $this->head->link('alternate', [
             'hreflang' => 'pt-br',
-            'href' => 'https://br.pedroborg.es'
+            'href'     => 'https://br.pedroborg.es',
         ]);
 
         $this->assertEquals('<link rel="canonical" href="https://pedroborg.es">', $tag);

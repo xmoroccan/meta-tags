@@ -3,15 +3,17 @@
 namespace PedroBorges\MetaTags;
 
 /**
- * PHP Meta Tags
+ * PHP Meta Tags.
  *
  * @version   0.0.1
+ *
  * @author    Pedro Borges <oi@pedroborg.es>
  * @copyright Pedro Borges <oi@pedroborg.es>
+ *
  * @link      https://github.com/pedroborges/meta-tags
+ *
  * @license   MIT
  */
-
 class MetaTags
 {
     protected $indentation;
@@ -22,8 +24,8 @@ class MetaTags
     /**
      * Create a new instance.
      *
-     * @param string  $indentation
-     * @param array   $order
+     * @param string $indentation
+     * @param array  $order
      *
      * @return void
      */
@@ -36,8 +38,8 @@ class MetaTags
     /**
      * Build an HTML link tag.
      *
-     * @param string  $key
-     * @param string  $value
+     * @param string $key
+     * @param string $value
      *
      * @return string
      */
@@ -46,7 +48,9 @@ class MetaTags
         $attributes = ['rel' => $key];
 
         if (is_array($value)) {
-            foreach ($value as $key => $v) { $attributes[$key] = $v; }
+            foreach ($value as $key => $v) {
+                $attributes[$key] = $v;
+            }
         } else {
             $attributes['href'] = $value;
         }
@@ -61,8 +65,8 @@ class MetaTags
     /**
      * Build an HTML meta tag.
      *
-     * @param string  $key
-     * @param string  $value
+     * @param string $key
+     * @param string $value
      *
      * @return string
      */
@@ -71,7 +75,9 @@ class MetaTags
         $attributes = ['name' => $key];
 
         if (is_array($value)) {
-            foreach ($value as $key => $v) { $attributes[$key] = $v; }
+            foreach ($value as $key => $v) {
+                $attributes[$key] = $v;
+            }
         } else {
             $attributes['content'] = $value;
         }
@@ -86,9 +92,9 @@ class MetaTags
     /**
      * Build an Open Graph meta tag.
      *
-     * @param string   $key
-     * @param string   $value
-     * @param boolean  $prefixed
+     * @param string $key
+     * @param string $value
+     * @param bool   $prefixed
      *
      * @return string
      */
@@ -97,7 +103,7 @@ class MetaTags
         $key = $prefixed ? "og:{$key}" : $key;
         $tag = $this->createTag('meta', [
             'property' => $key,
-            'content' => $value
+            'content'  => $value,
         ]);
 
         $this->addToTagsGroup('og', $key, $tag);
@@ -108,13 +114,13 @@ class MetaTags
     /**
      * Build a Title HTML tag.
      *
-     * @param string  $value
+     * @param string $value
      *
      * @return string
      */
     public function title($value)
     {
-        if (! empty($value)) {
+        if (!empty($value)) {
             $tag = "<title>{$this->escapeAll($value)}</title>";
 
             $this->tags['title'][] = $tag;
@@ -126,9 +132,9 @@ class MetaTags
     /**
      * Build a Twitter Card meta tag.
      *
-     * @param string   $key
-     * @param string   $value
-     * @param boolean  $prefixed
+     * @param string $key
+     * @param string $value
+     * @param bool   $prefixed
      *
      * @return string
      */
@@ -136,8 +142,8 @@ class MetaTags
     {
         $key = $prefixed ? "twitter:{$key}" : $key;
         $tag = $this->createTag('meta', [
-            'name' => $key,
-            'content' => $value
+            'name'    => $key,
+            'content' => $value,
         ]);
 
         $this->addToTagsGroup('twitter', $key, $tag);
@@ -146,7 +152,7 @@ class MetaTags
     }
 
     /**
-     * Render all registered HTML meta tags
+     * Render all registered HTML meta tags.
      *
      * @return string
      */
@@ -167,13 +173,15 @@ class MetaTags
     /**
      * Render all HTML meta tags from a specific group.
      *
-     * @param string  $group
+     * @param string $group
      *
      * @return string
      */
     protected function renderGroup($group)
     {
-        if (! isset($this->tags[$group])) return;
+        if (!isset($this->tags[$group])) {
+            return;
+        }
 
         $html = [];
 
@@ -188,16 +196,16 @@ class MetaTags
         }
 
         return count($html) > 0
-                ? $this->indentation . implode("\n" . $this->indentation, $html) . "\n"
+                ? $this->indentation.implode("\n".$this->indentation, $html)."\n"
                 : '';
     }
 
     /**
      * Add single HTML element to tags group.
      *
-     * @param string  $group
-     * @param string  $key
-     * @param string  $tag
+     * @param string $group
+     * @param string $key
+     * @param string $tag
      *
      * @return void
      */
@@ -219,7 +227,7 @@ class MetaTags
     /**
      * Build an HTML attribute string from an array.
      *
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return string
      */
@@ -230,48 +238,48 @@ class MetaTags
         foreach ($attributes as $key => $value) {
             $element = $this->attributeElement($key, $value);
 
-            if (! is_null($element)) {
+            if (!is_null($element)) {
                 $html[] = $element;
             }
         }
 
-        return count($html) > 0 ? ' ' . implode(' ', $html) : '';
+        return count($html) > 0 ? ' '.implode(' ', $html) : '';
     }
 
     /**
      * Build a single attribute element.
      *
-     * @param string  $key
-     * @param string  $value
+     * @param string $key
+     * @param string $value
      *
      * @return string
      */
     protected function attributeElement($key, $value)
     {
-        if (! is_null($value)) {
-            return $key . '="' . $this->escapeAll($value) . '"';
+        if (!is_null($value)) {
+            return $key.'="'.$this->escapeAll($value).'"';
         }
     }
 
     /**
-     * Build an HTML tag
+     * Build an HTML tag.
      *
-     * @param string  $tagName
-     * @param array   $attributes
+     * @param string $tagName
+     * @param array  $attributes
      *
      * @return string
      */
     protected function createTag($tagName, $attributes)
     {
-        if (! empty($tagName) && is_array($attributes)) {
+        if (!empty($tagName) && is_array($attributes)) {
             return "<{$tagName}{$this->attributes($attributes)}>";
         }
     }
 
     /**
-     * Replace special characters with HTML entities
+     * Replace special characters with HTML entities.
      *
-     * @param string  $value
+     * @param string $value
      *
      * @return string
      */
